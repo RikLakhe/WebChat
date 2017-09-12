@@ -28,4 +28,13 @@ io.sockets.on('connection', (socket) => {
         connections.splice(connections.indexOf(socket), 1);
         console.log('Connected : %s sockets connected', connections.length);
     });
+
+    // send message
+    socket.on('send message', (data) => {
+        // checking the message being sent
+        // console.log(data);
+        io.sockets.emit('new message', { msg: data });
+
+    });
+
 });

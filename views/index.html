@@ -18,12 +18,27 @@
         }
         
         .container {
+            height: 80vh;
+            margin-top: 30px;
             background-color: #E0B6B6;
         }
         
         .container>.headerr {
+            height: 60px;
             background-color: white;
+            padding: 8px;
         }
+        
+        .online>.well {
+            margin-top: 10px;
+            padding: 20px;
+            height: 65vh;
+            background-color: #E4E3E3;
+            border: 1px solid #A7A5A5;
+            border-radius: 10px;
+        }
+        
+        .messageBoard>.chat {}
     </style>
     <title>Web Chat</title>
 </head>
@@ -34,7 +49,7 @@
             <h1>Welcome to Web Chat Application</h1>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 online">
                 <div class="well">
                     <h2>Online users</h2>
                     <ul class="list-group">
@@ -42,19 +57,20 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 messageBoard">
                 <div class="chat" id="chat">
-                    <form id="messageForm">
-                        <div class="form-group">
-                            <label>Enter Message</label>
-                            <textarea name="msg" id="message" class="form-control"></textarea>
-                            <br/>
-                            <hr/>
-                            <input type="submit" class="btn btn-sucess" value="send Message" />
-
-                        </div>
-                    </form>
                 </div>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label>Enter Message</label>
+                        <textarea name="msg" id="message" class="form-control"></textarea>
+                        <br/>
+                        <hr/>
+                        <input type="submit" class="btn btn-sucess" value="send Message" />
+
+                    </div>
+                </form>
+
             </div>
         </div>
 
@@ -66,6 +82,23 @@
     <script>
         $(() => {
             var socket = io.connect();
+
+            var $messageForm = $('#messageForm');
+            var $message = $('#message');
+            var $chat = $('#chat');
+
+            $messageForm.submit((e) => {
+                e.preventDefault();
+                // check the send message button and jquery
+                // console.log('submited');
+                socket.emit('send message', $message.val());
+                $message.val(' ');
+            });
+
+            socket.on('new message', (data) => {
+                $chat.append('<div class="well">' + data.msg + "</div>");
+            });
+
         });
     </script>
 </body>
