@@ -16,3 +16,17 @@ server.listen(port, () => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(viewPath, "index.html"));
 });
+
+//connect
+io.sockets.on('connection', (socket) => {
+    connections.push(socket);
+    console.log('Connected : %s sockets connected', connections.length);
+    // socket.broadcast.emit('user connected');
+
+});
+
+//disconnect
+io.sockets.on('disconnect', (socket) => {
+    connection.splice(connections.indexOf(socket), 1);
+    console.log("Connected Sockets: " + connections.length);
+});
