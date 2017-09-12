@@ -23,10 +23,9 @@ io.sockets.on('connection', (socket) => {
     console.log('Connected : %s sockets connected', connections.length);
     // socket.broadcast.emit('user connected');
 
-});
-
-//disconnect
-io.sockets.on('disconnect', (socket) => {
-    connection.splice(connections.indexOf(socket), 1);
-    console.log("Connected Sockets: " + connections.length);
+    //disconnect
+    socket.on('disconnect', (data) => {
+        connections.splice(connections.indexOf(socket), 1);
+        console.log('Connected : %s sockets connected', connections.length);
+    });
 });
